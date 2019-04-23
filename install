@@ -1,0 +1,32 @@
+#!/bin/bash
+
+particle=$HOME/bin/particle
+
+if [ ! -f $particle ]; then
+    bash <( curl -sL https://particle.io/install-cli )
+fi
+
+if [ $# -gt 0 ] && [ $1 == -b ]; then
+    $particle flash --serial --yes bootloader.bin
+    sleep 2
+fi
+
+python dfu.py
+echo "Switched into dfu mode"
+sleep 1
+
+if [ -f system-part1.bin ]; then
+    $particle flash --usb system-part1.bin
+fi
+
+if [ -f system-part2.bin ]; then
+    $particle flash --usb system-part2.bin
+fi
+
+if [ -f system-part3.bin ]; then
+    $particle flash --usb system-part3.bin
+fi
+
+if [ -f user-part.bin ]; then
+    $particle flash --usb user-part.bin
+fi
