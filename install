@@ -24,9 +24,11 @@ if [ "$bootloader" -eq "1" ]; then
     sleep 2
 fi
 
-python dfu.py
-echo "Switched into dfu mode"
-sleep 1
+if [ -e "/dev/ttyACM0" ]; then
+    python dfu.py
+    echo "Switched into dfu mode"
+    sleep 1
+fi
 
 if [ "$system" -eq "1" ]; then
     if [ -f system-part1.bin ]; then
